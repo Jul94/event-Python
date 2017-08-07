@@ -21,14 +21,14 @@ class Timer(object):
         self.secs = self.end - self.start
         self.msecs = self.secs * 1000  # millisecs
         if self.verbose:
-            print 'elapsed time: %f ms' % self.msecs
+            print('elapsed time: %f ms' % self.msecs)
 
 def main():
     """Example of how timer is used"""
     with Timer() as my_timer:
         #Do some time consuming work here
         pass
-    print 'elapsed time is %s ms' % my_timer.msecs
+    print('elapsed time is %s ms' % my_timer.msecs)
 
 if __name__ == "__main__":
     main()

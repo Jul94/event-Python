@@ -3,9 +3,9 @@ import glob
 import math
 import os
 
-import caffe_lmdb
+from . import caffe_lmdb
 import cv2
-import datum_pb2
+from . import datum_pb2
 import numpy as np
 from scipy import ndimage
 from scipy.io import savemat
@@ -208,7 +208,7 @@ def make_td_images(td, num_spikes, step_factor=1):
     returns array of images
     """
     assert isinstance(td, ev.Events)
-    assert isinstance(num_spikes, (int, long))
+    assert isinstance(num_spikes, int)
     assert num_spikes > 0
     assert step_factor > 0
 
@@ -348,12 +348,12 @@ def save_to_lmdb(image_dataset, output_lmdb, is_float_data):
     """
     # shuffle the images before storing in the lmdb
     # np.random.shuffle(image_dataset) # does not work
-    lmdb_size = 5L * image_dataset.height[0] * image_dataset.width[0] * image_dataset.size
+    lmdb_size = 5 * image_dataset.height[0] * image_dataset.width[0] * image_dataset.size
 
     if is_float_data:
-        lmdb_size = lmdb_size * 4L;
+        lmdb_size = lmdb_size * 4;
 
-    shuffled_indices = range(image_dataset.size)
+    shuffled_indices = list(range(image_dataset.size))
     np.random.shuffle(shuffled_indices)
 
     image_database = caffe_lmdb.CaffeLmdb(output_lmdb, lmdb_size)
@@ -397,7 +397,7 @@ def save_to_mat(image_dataset, output_mat):
     returns void
     """
     # shuffle the images before storing in the dataset
-    shuffled_indices = range(image_dataset.size)
+    shuffled_indices = list(range(image_dataset.size))
     np.random.shuffle(shuffled_indices)
     num_images = image_dataset.size    
     num_features = image_dataset.height[0]*image_dataset.width[0]
@@ -436,7 +436,7 @@ def generate_nmnist_dataset(initial_size, input_dir, num_spikes, step_factor):
     # loop through each folder within the test directories
     for i in range(0, 10):
         current_dir = input_dir + os.path.sep + str(i) + os.path.sep + '*.bin'
-        print 'Processing %s...' %current_dir
+        print('Processing %s...' %current_dir)
         for filename in glob.iglob(current_dir):
             images = prepare_n_mnist(filename, True, num_spikes, step_factor)
             if num_images + len(images) >= image_dataset.size:
@@ -459,7 +459,7 @@ def generate_nmnist_continuous_dataset(initial_size, input_dir):
     # loop through each folder within the test directories
     for i in range(0, 10):
         current_dir = input_dir + os.path.sep + str(i) + os.path.sep + '*.bin'
-        print 'Processing %s...' %current_dir
+        print('Processing %s...' %current_dir)
         for filename in glob.iglob(current_dir):
             image = prepare_n_mnist_continuous(filename, False, False)
             if num_images + 1 >= image_dataset.size:
@@ -476,7 +476,7 @@ def show_lmdb_datum(key, datum):
     else:
         image = flat_image.reshape(datum.channels, datum.height, datum.width)
     label = datum.label
-    print label
+    print(label)
     cv2.imshow('img', image)
     cv2.waitKey(1)
 

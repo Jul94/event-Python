@@ -36,7 +36,7 @@ class CaffeLmdb(object):
         if self._write_txn is None:
             self._write_txn = self.lmdb.begin(write=True)
         else:
-            print "Transaction is already open"
+            print("Transaction is already open")
 
     def commit_write_transaction(self):
         """Commit the transaction so that data is written to the lmdb"""
@@ -45,7 +45,7 @@ class CaffeLmdb(object):
             self._write_txn.commit()
             self._write_txn = None
         else:
-            print "No transaction present"
+            print("No transaction present")
 
     def close_write_transaction(self):
         """Close the transaction. Any data that has not been committed yet will be discarded"""
@@ -54,7 +54,7 @@ class CaffeLmdb(object):
             self._write_txn.abort()
             self._write_txn = None
         else:
-            print "No transaction present"
+            print("No transaction present")
 
     def write_datum(self, key, datum):
         """
@@ -65,11 +65,11 @@ class CaffeLmdb(object):
         """
         #if not hasattr(self, '_write_txn'):
         if self._write_txn is None:
-            print "Transaction is not started yet"
+            print("Transaction is not started yet")
         elif key is None:
-            print "Key cannot be None"
+            print("Key cannot be None")
         elif not isinstance(datum, datum_pb2.Datum):
-            print "datum must be of type datum_pb2.Datum"
+            print("datum must be of type datum_pb2.Datum")
         else:
             self._write_txn.put(key.encode('ascii'), datum.SerializeToString(), overwrite=True)
 
@@ -141,7 +141,7 @@ def main():
 
     def print_function(key, datum):
         """Print the key and label of the datum"""
-        print 'key: {0}\n\tvalue: {1}'.format(key, datum.label)
+        print('key: {0}\n\tvalue: {1}'.format(key, datum.label))
 
     image_database.process_all_data(print_function)
 

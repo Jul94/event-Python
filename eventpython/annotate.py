@@ -177,7 +177,7 @@ def annotate_tracks(TD, frame_length):
     
     cv2.namedWindow('frame')
     cv2.setMouseCallback('frame', annotate) 
-    print 'Click in window and press spacebar to begin tracking'
+    print('Click in window and press spacebar to begin tracking')
     
     while(True):
         key1 = cv2.waitKey(5)
@@ -223,17 +223,17 @@ def annotate_tracks(TD, frame_length):
             trackpoints_ts[trackpoint_ind] = TD.data.ts[t2_ind] # Track point time stamp is the time at the end of the current frame. 
             trackpoint_ind += 1
             if((px > 0) & (py > 0) & (px < TD.width) & (py < TD.height)):
-                print px, py
+                print(px, py)
     
         if(key == ord('f')):
-            print 'Faster'
+            print('Faster')
             frame_length = np.round(frame_length*2)
             tmax = np.max(TD.data.ts)
             tmin = frame_ts
             n_frames = frame_num + np.ceil((tmax-tmin)/frame_length)
     
         if(key == ord('s')):
-            print 'Slower'
+            print('Slower')
             frame_length = np.round(frame_length/2)
             tmax = np.max(TD.data.ts)
             tmin = frame_ts
@@ -298,10 +298,10 @@ class Annotation_State(object):
                 self.is_complete.append(False)
                 os.makedirs(os.path.join(output_folder, str(next_folder_number)))
 
-                print 'Added file ' + new_input_file
+                print('Added file ' + new_input_file)
                 next_folder_number += 1
 
-        print 'State file updated.'
+        print('State file updated.')
 
 
 def load_state(filename):
@@ -332,7 +332,7 @@ def link_files(input_folder, output_folder, state_file_name):
                          about which files have been completely annotated. 
     """
     
-    print 'Creating output directory structure and state file...'
+    print('Creating output directory structure and state file...')
     output_subfolders = []
     source_files = []
     is_complete = []
@@ -349,12 +349,12 @@ def load_TD(file_path):
     """
     
     if(file_path.endswith('.val')):
-        print 'Reading event file: ' + file_path
+        print('Reading event file: ' + file_path)
         TD = eventvision.read_aer(file_path)[0]
         return TD
         
     if(file_path.endswith('.bin')):
-        print 'Reading event file: ' + file_path
+        print('Reading event file: ' + file_path)
         TD = eventvision.read_bin_linux(file_path)
         return TD
 
@@ -371,12 +371,12 @@ def add_track(folder, track_num, TD, annotated_by, source_file):
         source_file: The file path to the file from which the TD object was read.                 
     """
     
-    print 'Annotating track number ' + str(track_num)
+    print('Annotating track number ' + str(track_num))
     track = annotate_tracks(TD, 100000)
     is_under_review = True
 
     while(is_under_review):
-        redo = raw_input('Press [r] to re-annotate this track, [v] to view the track or [s] to save and continue:')
+        redo = input('Press [r] to re-annotate this track, [v] to view the track or [s] to save and continue:')
 
         if((redo == 'r') | (redo == 'R')):
             track = annotate_tracks(TD, 100000)
@@ -389,9 +389,9 @@ def add_track(folder, track_num, TD, annotated_by, source_file):
 
     while(True):
         try:
-            track_type = int(raw_input('Please enter the track type (integer value):'))
+            track_type = int(input('Please enter the track type (integer value):'))
         except ValueError:
-            print 'Invalid - track type must be an integer.'
+            print('Invalid - track type must be an integer.')
         else:
             break
 
@@ -399,7 +399,7 @@ def add_track(folder, track_num, TD, annotated_by, source_file):
     track.annotated_by = annotated_by
     track.source_file = source_file
     track.save(os.path.join(folder,'Track_' + str(track_num)))
-    print 'Track saved.'
+    print('Track saved.')
 
 def main():
     """Program to annotate the tracks of moving features in TD recordings.
@@ -435,20 +435,20 @@ def main():
     state_file_name = 'annotation_state.pkl'
 
     while(not os.path.isdir(input_folder)):
-        print 'Unable to find input directory ' + input_folder
+        print('Unable to find input directory ' + input_folder)
 
         # Pause before exit in case program not called from command line.
         while(True):
-            should_exit = raw_input('Press [x] to exit.')
+            should_exit = input('Press [x] to exit.')
             if(should_exit == 'x'):
                 sys.exit()
 
     while(not os.path.isdir(output_folder)):
-        print 'Unable to find output directory ' + output_folder
+        print('Unable to find output directory ' + output_folder)
 
         # Pause before exit in case program not called from command line.
         while(True):
-            should_exit = raw_input('Press [x] to exit.')
+            should_exit = input('Press [x] to exit.')
             if(should_exit == 'x'):
                 sys.exit()
 
@@ -456,7 +456,7 @@ def main():
     # If state file does not exist, create it as well as the output
     # directory structure which will hold the track files.
     if(os.path.isfile(os.path.join(output_folder, state_file_name))):
-        print 'State file found.'
+        print('State file found.')
         annotation_state = load_state(os.path.join(output_folder, state_file_name))
         # Update in case any new files added to input directory:
         annotation_state.update_state(input_folder, output_folder)
@@ -467,7 +467,7 @@ def main():
     incomplete_indices = [i for i, individual_status in enumerate(annotation_state.is_complete) if not individual_status]
 
     if(len(incomplete_indices) > 0):
-        annotated_by = raw_input('Please enter your name: ') # Only ask if there are still files to annotate.
+        annotated_by = input('Please enter your name: ') # Only ask if there are still files to annotate.
 
     for i in range(len(incomplete_indices)):
         num_track_files = 0
@@ -486,16 +486,16 @@ def main():
         # If track files already exist, give the user the option to 
         # review them.
         if(num_track_files > 0):              
-            print 'Track files have been found.'
+            print('Track files have been found.')
             is_review_tracks = True
             
             while(is_review_tracks):
-                check_tracks = raw_input('Press [v] to view existing tracks or [c] continue:')
+                check_tracks = input('Press [v] to view existing tracks or [c] continue:')
 
                 if((check_tracks == 'v') | (check_tracks == 'V')):
                     for track_file in os.listdir(annotation_state.output_subfolders[incomplete_file_ind]):
                         current_track = load_track(os.path.join(annotation_state.output_subfolders[incomplete_file_ind],track_file))
-                        print 'Reviewing track ' + track_file
+                        print('Reviewing track ' + track_file)
                         current_track.review(TD)
 
                 if((check_tracks == 'c') | (check_tracks == 'C')):
@@ -504,7 +504,7 @@ def main():
         is_add_track = True
 
         while(is_add_track):   
-            check_tracks = raw_input('Press [a] to add a track, [c] to mark this file as complete and continue to the next file, or [x] to exit.')  
+            check_tracks = input('Press [a] to add a track, [c] to mark this file as complete and continue to the next file, or [x] to exit.')  
 
             if((check_tracks == 'a') | (check_tracks == 'A')):
                 add_track(annotation_state.output_subfolders[incomplete_file_ind], num_track_files, TD, annotated_by, annotation_state.source_files[incomplete_file_ind])
@@ -518,11 +518,11 @@ def main():
             if((check_tracks == 'x') | (check_tracks == 'X')):
                 sys.exit() # Any tracks have been saved already so can exit here.
 
-    print 'There are no more files to annotate in the input directory.'
+    print('There are no more files to annotate in the input directory.')
 
     # Pause before exit in case program not called from command line.
     while(True):
-        should_exit = raw_input('Press [x] to exit.')
+        should_exit = input('Press [x] to exit.')
         if(should_exit == 'x'):
             break
 

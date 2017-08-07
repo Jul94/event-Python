@@ -147,7 +147,7 @@ class Events(object):
                 y_prev = datum_y
                 p_prev = datum_p
                 i = i + 1
-        print 'filtering took %s seconds' % ref_timer.secs
+        print('filtering took %s seconds' % ref_timer.secs)
         return self.data[valid_indices.astype('bool')]
 
     def sort_order(self):
@@ -318,9 +318,9 @@ def present_checkerboard(num_squares):
 
     # display
     cv2.imshow('image', img)
-    print 'Warning: Do not resize the checkerboard image window! It has been shown on the screen at a specific size which must be known for calibration'
+    print('Warning: Do not resize the checkerboard image window! It has been shown on the screen at a specific size which must be known for calibration')
 
-    print 'press any key when done recording images'
+    print('press any key when done recording images')
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     #print('Checkerboard rectangle size is:')
@@ -424,12 +424,12 @@ def auto_calibrate(num_squares, square_size_mm, scale, image_directory, image_fo
 
     # calculate the error
     tot_error = 0
-    for i in xrange(len(objpoints)):
+    for i in range(len(objpoints)):
         imgpoints2, _ = cv2.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
         error = cv2.norm(imgpoints[i], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
         tot_error += error
 
-    print "mean error: ", tot_error / len(objpoints)
+    print("mean error: ", tot_error / len(objpoints))
 
     return ret, mtx, dist, rvecs, tvecs
 
@@ -443,7 +443,7 @@ def read_aer(filename):
         #raw_data = np.fromfile(f, dtype=np.uint8, count=-1)
         raw_data = np.fromfile(file_handle, dtype=np.uint8)
         file_handle.close()
-    print '=> Reading .val file took %s s' % read_aer_timer.secs
+    print('=> Reading .val file took %s s' % read_aer_timer.secs)
 
     with timer.Timer() as read_aer_timer:
         raw_data = np.uint16(raw_data)
@@ -457,7 +457,7 @@ def read_aer(filename):
         all_event_type2 = (raw_data[1::4] & 64) >> 6 #bit 6
         #all_ts = all_ts.astype('uint')
         all_ts2 = all_ts2.astype('uint')
-    print '=> Parsing .val data took %s s' % read_aer_timer.secs
+    print('=> Parsing .val data took %s s' % read_aer_timer.secs)
 
     time_increment = 2 ** 13
     ##old way, much slower
@@ -488,7 +488,7 @@ def read_aer(filename):
         all_event_type2[overflow_indices] = 2
         em_event_indices2 = np.where(all_event_type2 == 1)[0]
         td_event_indices2 = np.where(all_event_type2 == 0)[0]
-    print '=> Processing .val data new way took %s s' % read_aer_timer.secs
+    print('=> Processing .val data new way took %s s' % read_aer_timer.secs)
 
     #em = Events(em_event_indices.sum())
     #em.data.x = all_x[em_event_indices]
@@ -691,4 +691,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-print 'Event-based vision module imported'
+print('Event-based vision module imported')

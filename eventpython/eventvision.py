@@ -244,16 +244,16 @@ class Events(object):
         aedat_file = open(filename, 'wb')
 
         version = '2.0'
-        aedat_file.write('#!AER-DAT' + version + '\r\n')
-        aedat_file.write('# This is a raw AE data file - do not edit\r\n')
+        aedat_file.write(('#!AER-DAT' + version + '\r\n').encode())
+        aedat_file.write('# This is a raw AE data file - do not edit\r\n'.encode())
         aedat_file.write \
-            ('# Data format is int32 address, int32 timestamp (8 bytes total), repeated for each event\r\n')
-        aedat_file.write('# Timestamps tick is 1 us\r\n')
-        aedat_file.write('# created ' + time.strftime("%d/%m/%Y") \
+            ('# Data format is int32 address, int32 timestamp (8 bytes total), repeated for each event\r\n'.encode())
+        aedat_file.write('# Timestamps tick is 1 us\r\n'.encode())
+        aedat_file.write(('# created ' + time.strftime("%d/%m/%Y") \
             + ' ' + time.strftime("%H:%M:%S") \
-            + ' by the Python function "write2jAER"\r\n')
+            + ' by the Python function "write2jAER"\r\n').encode())
         aedat_file.write \
-            ('# This function fakes the format of DAVIS640 to allow for the full ATIS address space to be used (304x240)\r\n')
+            ('# This function fakes the format of DAVIS640 to allow for the full ATIS address space to be used (304x240)\r\n'.encode())
         ##aedat_file.write(vector_all.astype(dtype='>u8').tostring())
         to_write = bytearray(vector_all[::-1])
         to_write.reverse()

@@ -2,14 +2,16 @@
 import glob
 import math
 import os
+
+import caffe_lmdb
 import cv2
+import datum_pb2
 import numpy as np
 from scipy import ndimage
 from scipy.io import savemat
-import caffe_lmdb
-import datum_pb2
-import eventvision as ev
-import timer
+
+from eventpython import eventvision as ev
+
 
 def stabilize(td):
     """Compensate for motion of the ATIS sensor during recording of the Neuromorphic datasets

@@ -1,13 +1,15 @@
 """This module contains classes and functions for annotating trackpoints in AER vision data.
 """
-import eventvision
-import cv2
 import os
-import numpy as np
-import h5py
 import pickle
 import sys
-import timer
+
+import cv2
+import h5py
+import numpy as np
+
+from eventpython import eventvision
+
 
 class Track(object):
     """Manually annotated trackpoints.

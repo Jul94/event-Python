@@ -1,8 +1,9 @@
 """This module contains classes, functions and an example (main) for preparing image data for
 caffe"""
-import numpy as np
 import lmdb
-import datum_pb2
+import numpy as np
+
+from eventpython import datum_pb2
 
 
 class CaffeLmdb(object):

@@ -3,10 +3,13 @@
 This module contains classes, functions and an example (main) for handling AER vision data.
 """
 import glob
+
 import cv2
 import numpy as np
 from win32api import GetSystemMetrics
-import timer
+
+from eventpython import timer
+
 
 class Events(object):
     """

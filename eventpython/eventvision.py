@@ -6,7 +6,10 @@ import glob
 
 import cv2
 import numpy as np
-from win32api import GetSystemMetrics
+try:
+    from win32api import GetSystemMetrics
+except:
+    pass
 
 from eventpython import timer
 

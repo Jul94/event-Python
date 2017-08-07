@@ -13,3 +13,4 @@
 /.vs/event-Python/v14
 /trainlmdb_continuous
 .idea/
+eventpython.egg-info/

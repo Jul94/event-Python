@@ -542,6 +542,14 @@ def read_dataset(filename):
     f.close()
     raw_data = np.uint32(raw_data)
 
+    #### WORKAROUND
+    # Actually, length of raw_data should be a multiple of 5, but for some files it isnt.
+    # So, we drop the last, incomplete event in that case.
+    remainder = len(raw_data) % 5
+    if remainder != 0:
+        raw_data = raw_data[:-remainder]
+    #### END OF WORKAROUND
+
     all_y = raw_data[1::5]
     all_x = raw_data[0::5]
     all_p = (raw_data[2::5] & 128) >> 7 #bit 7
